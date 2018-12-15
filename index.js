@@ -50,6 +50,16 @@ app.put('/api/genres/:id', (req, res)=>{
   res.status(200).send(genre);
 });
 
+app.delete('/api/genres/delete/:id', (req, res)=>{
+  const id = req.params.id;
+  const genre = genres.find((element) => {return element.id === parseInt(id)});
+  if(!genre)return res.status(404).send('The requested genre could not be found');
+  genres.forEach((value, index, array)=>{
+    return value.id === parseInt(id) ? genres.splice(index, 1): value
+  });
+  res.status(200).send("Genre deleted successfully");
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, ()=>{
   console.log(`App is listening on port ${port}`)
