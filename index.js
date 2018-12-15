@@ -4,7 +4,10 @@ const Joi = require('joi');
 const app = express();
 app.use(express.json());
 
-let genres = [];
+let genres = [
+  {id: 1, genre: "Action"},
+  {id: 2, genre: "Horror"}
+  ];
 
 app.get('/', (req, res)=>{
   res.send('This is the home page');
@@ -29,6 +32,12 @@ app.post('/api/genres', (req, res)=>{
 
   genres.push(newGenre);
   res.status(201).send(newGenre);
+});
+
+app.get('/api/genres/:id', (req, res)=>{
+  const id = req.params.id;
+  const genre = genres.find((element) => {return element.id === parseInt(id)});
+  res.send(genre);
 });
 
 const port = process.env.PORT || 3000;
