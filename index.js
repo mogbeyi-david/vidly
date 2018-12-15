@@ -6,7 +6,8 @@ app.use(express.json());
 
 let genres = [
   {id: 1, genre: "Action"},
-  {id: 2, genre: "Horror"}
+  {id: 2, genre: "Horror"},
+  {id: 3, genre: "Horror"}
   ];
 
 app.get('/', (req, res)=>{
@@ -39,6 +40,14 @@ app.get('/api/genres/:id', (req, res)=>{
   const genre = genres.find((element) => {return element.id === parseInt(id)});
   if(!genre)return res.status(404).send('The requested genre could not be found');
   res.send(genre);
+});
+
+app.put('/api/genres/:id', (req, res)=>{
+  const id = req.params.id;
+  const genre = genres.find((element) => {return element.id === parseInt(id)});
+  if(!genre)return res.status(404).send('The requested genre could not be found');
+  genre.genre = req.body.genre;
+  res.status(200).send(genre);
 });
 
 const port = process.env.PORT || 3000;
