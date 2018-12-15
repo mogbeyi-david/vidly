@@ -43,6 +43,11 @@ app.get('/api/genres/:id', (req, res)=>{
 });
 
 app.put('/api/genres/:id', (req, res)=>{
+  const schema = Joi.object().keys({
+    genre: Joi.string().required()
+  });
+  const { error } = Joi.validate(req.body, schema);
+  if(error)res.status(400).send(error.details[0].message)
   const id = req.params.id;
   const genre = genres.find((element) => {return element.id === parseInt(id)});
   if(!genre)return res.status(404).send('The requested genre could not be found');
@@ -52,8 +57,6 @@ app.put('/api/genres/:id', (req, res)=>{
 
 app.delete('/api/genres/delete/:id', (req, res)=>{
   const id = req.params.id;
-  const genre = genres.find((element) => {return element.id === parseInt(id)});
-  if(!genre)return res.status(404).send('The requested genre could not be found');
   genres.forEach((value, index, array)=>{
     return value.id === parseInt(id) ? genres.splice(index, 1): value
   });
